@@ -2,6 +2,17 @@ import React from "react";
 import Transaction from "./Transaction";
 
 function TransactionsList() {
+  //deleting a transaction
+  const delTransaction = async function (transactionID) {
+    console.log(transactionID);
+    try{
+      const res = await fetch('http://localhost:8001/transactions/' + transactionID, {method: 'DELETE'},);
+      handleDelTransaction(transactionID);
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
   return (
     <table className="ui celled striped padded table">
       <tbody>
@@ -20,6 +31,13 @@ function TransactionsList() {
           </th>
         </tr>
         {/* render a list of <Transaction> components here */}
+        {transactions.map((transaction, idx)=> (
+          <Transaction
+            key={transaction.id}
+            transaction={transaction}
+            delTransaction={delTransaction}
+          />
+        ))}
       </tbody>
     </table>
   );
